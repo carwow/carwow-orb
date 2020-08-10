@@ -1,0 +1,7 @@
+description: Add workflow duration to honeycomb
+steps:
+  - restore_cache:
+      key: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'
+  - buildevents/add_context:
+      field_name: deploy_duration_ms
+      field_value: $(expr \( $(date +%s) - $(cat /tmp/be/build_start) \) \* 1000)

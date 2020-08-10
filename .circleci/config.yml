@@ -1,0 +1,24 @@
+version: 2.1
+
+orbs:
+  orb-tools: circleci/orb-tools@9
+
+
+workflow:
+  build-and-publish:
+    jobs:
+      - orb-tools/lint
+      - orb-tools/shellcheck
+      - orb-tools/pack:
+          requires: [orb-tools/lint, orb-tools/shellcheck]
+      - orb-tools/publish-dev:
+          requires: [orb-tools/pack]
+      - orb-tools/dev-promote-prod-from-commit-subject:
+          orb-name: carwow/carwow-orb
+          add-pr-comment: false
+          fail-if-semver-not-indicated: false
+          publish-version-tag: false
+          requires: [orb-tools/publish-dev]
+          filters:
+            branches:
+              only: master
