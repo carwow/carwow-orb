@@ -12,6 +12,7 @@ workflows:
       - orb-tools/pack:
           requires: [orb-tools/lint, orb-tools/shellcheck]
       - orb-tools/publish-dev:
+          orb-name: carwow/carwow-orb
           requires: [orb-tools/pack]
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: carwow/carwow-orb
