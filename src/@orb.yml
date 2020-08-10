@@ -5,3 +5,6 @@ description: carwow's orb with handy snippets
 display:
   home_url: "https://www.carwow.co.uk"
   source_url: "https://github.com/carwow/carwow-orb"
+
+orbs:
+  buildevents: honeycombio/buildevents@0.2
