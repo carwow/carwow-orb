@@ -1,0 +1,10 @@
+description: >
+  Watch workflow
+
+  Wait for workflow to finish to send workflow event to Honeycomb.
+
+docker:
+  - *ruby
+
+steps:
+  - buildevents/watch_build_and_finish

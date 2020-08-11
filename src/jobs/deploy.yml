@@ -10,7 +10,7 @@ parameters:
     type: string
 
 docker:
-  - image: carwow/ruby-ci:2.7-node-12
+  - *ruby
 
 steps:
   - buildevents/with_job_span:

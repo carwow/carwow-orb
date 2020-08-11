@@ -1,0 +1,13 @@
+description: >
+  Start job of a workflow
+
+  Sets up Honeycomb buildevents and build start time.
+
+docker:
+  - *ruby
+
+steps:
+  - buildevents/start_trace
+  - save_cache:
+      key: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'
+      paths: [/tmp/be/build_start]
