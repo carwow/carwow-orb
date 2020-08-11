@@ -9,8 +9,7 @@ parameters:
     description: Heroku's application name
     type: string
 
-docker:
-  - *ruby
+executor: ruby
 
 steps:
   - buildevents/with_job_span:

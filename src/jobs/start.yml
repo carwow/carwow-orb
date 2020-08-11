@@ -3,8 +3,7 @@ description: >
 
   Sets up Honeycomb buildevents and build start time.
 
-docker:
-  - *ruby
+executor: ruby
 
 steps:
   - buildevents/start_trace

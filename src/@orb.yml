@@ -8,7 +8,3 @@ display:
 
 orbs:
   buildevents: honeycombio/buildevents@0.2
-
-references:
-  ruby: &ruby
-    image: carwow/ruby-ci:2.7-node-12
