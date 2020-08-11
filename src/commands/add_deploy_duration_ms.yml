@@ -1,4 +1,5 @@
-description: Add workflow duration to honeycomb
+description: Add duration since first workflow for this commit to Honeycomb
+
 steps:
   - restore_cache:
       key: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'

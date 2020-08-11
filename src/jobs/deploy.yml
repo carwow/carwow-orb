@@ -1,0 +1,21 @@
+description: >
+  Deploy to Heroku
+
+  This job is intended to be used by projects that deploy to a single
+  application.
+
+parameters:
+  app:
+    description: Heroku's application name
+    type: string
+
+executor: ruby
+
+steps:
+  - buildevents/with_job_span:
+      steps:
+        - checkout
+        - add_ssh_keys
+        - run: deploy << parameters.app >>
+        - add_deploy_duration_ms
+        - add_workflow_attempt
