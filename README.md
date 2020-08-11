@@ -1,6 +1,8 @@
 carwow-orb
 ===
 
+[![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/carwow/carwow-orb)]
+
 carwow's orb for CircleCI with handy snippets.
 
 
