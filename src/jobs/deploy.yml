@@ -1,4 +1,8 @@
-description: Deploy to Heroku
+description: >
+  Deploy to Heroku
+
+  This job is intended to be used by projects that deploy to a single
+  application.
 
 parameters:
   app:

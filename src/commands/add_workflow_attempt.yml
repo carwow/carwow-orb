@@ -1,4 +1,4 @@
-description: Add workflow retry attempt count to honeycomb
+description: Add workflow run attempt count to Honeycomb
 
 steps:
   - run:
