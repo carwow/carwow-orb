@@ -11,3 +11,6 @@ parameters:
 
 docker:
   - image: carwow/ruby-ci:<< parameters.tag >>
+    auth:
+      username: $DOCKER_USERNAME
+      password: $DOCKER_TOKEN
