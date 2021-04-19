@@ -7,4 +7,5 @@ executor: ruby
 resource_class: small
 
 steps:
-  - buildevents/watch_build_and_finish
+  - buildevents/watch_build_and_finish:
+      timeout: 45
