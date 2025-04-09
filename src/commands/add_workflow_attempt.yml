@@ -2,6 +2,7 @@ description: Add workflow run attempt count to Honeycomb
 
 steps:
   - run:
+      name: fetching workflow_attempt
       command: |
         PIPELINE_ID=$(curl -s -H 'Accept: application/json' -H "Circle-Token: $CIRCLE_TOKEN" "https://circleci.com/api/v2/workflow/$CIRCLE_WORKFLOW_ID" | jq '.pipeline_id' | tr -d '"')
         WORKFLOW_COUNT=$(curl -s -H 'Accept: application/json' -H "Circle-Token: $CIRCLE_TOKEN" "https://circleci.com/api/v2/pipeline/$PIPELINE_ID/workflow" | jq '.items | length')

@@ -1,0 +1,44 @@
+description: Verify the latest Heroku release succeeded
+
+parameters:
+  app:
+    description: Heroku's application name
+    type: string
+
+steps:
+  - run:
+      name: heroku release succeeded
+      command: |
+        app="<<parameters.app>>"
+        retries=30 # This waits for 5 minutes for the release to be successful given the 10 seconds sleep below.
+
+        while [ $retries -gt 0 ] && heroku releases:info --app "$app" --json | grep status | grep -q pending; do
+          echo "Release is pending..."
+          ((retries--))
+          sleep 10
+        done
+
+        status=$(heroku releases:info --app "$app" --json | jq --raw-output .status)
+        case $status in
+        succeeded)
+          echo "Release succeeded!"
+          exit 0
+          ;;
+        failed)
+          echo "Release failed!"
+          echo "Retry build or get help."
+          exit 1
+          ;;
+        pending)
+          echo "Release is still pending!"
+          echo "Heroku may have an ongoing incident."
+          echo "Check Heroku releases manually or get help."
+          exit 2
+          ;;
+        *)
+          echo "Release status is unexpected: $status"
+          echo "Heroku may have an ongoing incident."
+          echo "Check Heroku releases manually or get help."
+          exit 3
+          ;;
+        esac
