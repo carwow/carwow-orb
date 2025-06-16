@@ -3,11 +3,20 @@ description: >
 
   Sets up Honeycomb buildevents and build start time.
 
+parameters:
+  cache_key:
+    description: >
+      The cache key which includes the build start timestamp file.
+
+      See `add_deploy_duration_ms` command.
+    type: string
+    default: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'
+
 executor: ruby
 resource_class: small
 
 steps:
   - buildevents/start_trace
   - save_cache:
-      key: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'
+      key: << parameters.cache_key >>
       paths: [/tmp/be/build_start]

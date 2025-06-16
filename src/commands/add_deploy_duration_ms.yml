@@ -1,8 +1,17 @@
 description: Add duration since first workflow for this commit to Honeycomb
 
+parameters:
+  cache_key:
+    description: >
+      The cache key which includes the build start timestamp file.
+
+      See `start` job.
+    type: string
+    default: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'
+
 steps:
   - restore_cache:
-      key: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'
+      key: << parameters.cache_key >>
   - buildevents/add_context:
       field_name: deploy_duration_ms
       field_value: $(expr \( $(date +%s) - $(cat /tmp/be/build_start) \) \* 1000)
