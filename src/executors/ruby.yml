@@ -7,7 +7,7 @@ parameters:
 
       https://hub.docker.com/r/carwow/ruby-ci/tags?page=1&ordering=last_updated
     type: string
-    default: "latest"
+    default: "3.4-noble"
 
 docker:
   - image: carwow/ruby-ci:<< parameters.tag >>
