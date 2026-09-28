@@ -12,7 +12,7 @@ parameters:
     type: string
     default: 'build-start-{{ .Environment.CIRCLE_SHA1 }}'
 
-executor: ruby
+executor: base
 resource_class: small
 
 steps:
