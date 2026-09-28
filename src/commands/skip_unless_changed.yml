@@ -1,0 +1,32 @@
+description: >
+  Ends the job, successfully, on a branch that changed none of the given paths since it left
+  the base branch, so a required check still reports. The base branch always runs everything,
+  and so does a branch whose merge base cannot be found.
+
+parameters:
+  paths:
+    description: Space-separated paths passed to git diff, e.g. "payments_service .circleci/config.yml".
+    type: string
+  base_branch:
+    description: The branch that always runs everything, and that the changes are compared with.
+    type: string
+    default: master
+
+steps:
+  - run:
+      name: Skip unless << parameters.paths >> changed
+      command: |
+        if [ "$CIRCLE_BRANCH" = "<< parameters.base_branch >>" ]; then exit 0; fi
+
+        if ! git fetch --quiet origin "<< parameters.base_branch >>" || ! base=$(git merge-base HEAD FETCH_HEAD); then
+          echo "Could not find where this branch left << parameters.base_branch >>, so running everything."
+          exit 0
+        fi
+
+        # shellcheck disable=SC2086
+        if git diff --quiet "$base" HEAD -- << parameters.paths >>; then
+          echo "Nothing in << parameters.paths >> changed since ${base}, so this job has nothing to check."
+          circleci-agent step halt
+        else
+          echo "<< parameters.paths >> changed since ${base}, so running everything."
+        fi

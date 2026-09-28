@@ -1,0 +1,13 @@
+description: Saves the Playwright browsers for the version restore_playwright_browser found.
+
+parameters:
+  key_prefix:
+    description: Must match the one given to restore_playwright_browser.
+    type: string
+    default: '{{ .Environment.CACHE_VERSION }}'
+
+steps:
+  - save_cache:
+      name: 'Saving cache: playwright browser'
+      key: '<< parameters.key_prefix >>-playwright-browser-{{ checksum "/tmp/playwright_version" }}'
+      paths: [~/.cache/ms-playwright]

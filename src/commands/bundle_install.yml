@@ -1,0 +1,26 @@
+description: >
+  Installs the gems into vendor/bundle, so the bundler cache can carry them. Bundler keeps the
+  .gem it downloaded next to the gem it unpacked, and bundle clean leaves those behind, so they
+  are dropped to keep the cache small.
+
+parameters:
+  working_directory:
+    type: string
+    default: .
+  frozen:
+    description: Use false for gems that do not commit their Gemfile.lock.
+    type: boolean
+    default: true
+
+steps:
+  - run:
+      name: bundle install
+      working_directory: << parameters.working_directory >>
+      command: |
+        ruby -v
+        bundle version
+        bundle config set --local path vendor/bundle
+        bundle config set --local frozen <<# parameters.frozen >>true<</ parameters.frozen >><<^ parameters.frozen >>false<</ parameters.frozen >>
+        bundle check || bundle install --jobs=4 --retry=3
+        bundle clean --force
+        rm -rf vendor/bundle/ruby/*/cache

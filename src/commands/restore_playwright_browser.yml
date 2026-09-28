@@ -1,0 +1,19 @@
+description: >
+  Restores the Playwright browsers downloaded for the Playwright version in node_modules.
+  Run it after the node packages are installed, and save_playwright_browser after installing
+  the browser.
+
+parameters:
+  key_prefix:
+    description: Change it to start from an empty cache.
+    type: string
+    default: '{{ .Environment.CACHE_VERSION }}'
+
+steps:
+  - run:
+      name: Find the Playwright version
+      command: node -p "require('playwright/package.json').version" | tee /tmp/playwright_version
+  - restore_cache:
+      name: 'Restore cache: playwright browser'
+      keys:
+        - '<< parameters.key_prefix >>-playwright-browser-{{ checksum "/tmp/playwright_version" }}'
