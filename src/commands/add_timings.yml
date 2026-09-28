@@ -1,0 +1,13 @@
+description: >
+  Adds the fields of a logfmt file (one name="value" per line) to the job's Honeycomb event,
+  e.g. how long each part of a job's setup took. Does nothing when the file is missing.
+
+parameters:
+  file:
+    type: string
+
+steps:
+  - run:
+      name: Report the timings in << parameters.file >>
+      when: always
+      command: cat "<< parameters.file >>" >> "$BUILDEVENT_FILE" || true

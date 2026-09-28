@@ -1,0 +1,16 @@
+description: >
+  Restores RuboCop's result cache from the latest save. RuboCop keys every entry on the file,
+  the config and its own version, so any earlier cache is safe to start from: only the files
+  that changed since then get inspected again.
+
+parameters:
+  key_prefix:
+    description: Must match the one given to save_rubocop_cache.
+    type: string
+    default: '{{ .Environment.CACHE_VERSION }}'
+
+steps:
+  - restore_cache:
+      name: 'Restore cache: rubocop'
+      keys:
+        - '<< parameters.key_prefix >>-rubocop-'

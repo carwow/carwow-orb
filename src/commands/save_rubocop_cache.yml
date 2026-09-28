@@ -1,0 +1,33 @@
+description: >
+  Saves RuboCop's result cache, on one branch only, so that branches do not each upload their
+  own copy of the same few thousand files.
+
+  Orb commands cannot read pipeline values, so the caller passes the branch in:
+  `branch: << pipeline.git.branch >>`. That also means calling it outside any orb command that
+  takes steps, such as buildevents/with_job_span.
+
+parameters:
+  branch:
+    description: The branch this pipeline runs on.
+    type: string
+  save_on:
+    description: The only branch that saves the cache.
+    type: string
+    default: master
+  key_prefix:
+    description: Must match the one given to restore_rubocop_cache.
+    type: string
+    default: '{{ .Environment.CACHE_VERSION }}'
+  path:
+    type: string
+    default: ~/.cache/rubocop_cache
+
+steps:
+  - when:
+      condition:
+        equal: [<< parameters.save_on >>, << parameters.branch >>]
+      steps:
+        - save_cache:
+            name: 'Saving cache: rubocop'
+            key: '<< parameters.key_prefix >>-rubocop-{{ .Revision }}'
+            paths: [<< parameters.path >>]

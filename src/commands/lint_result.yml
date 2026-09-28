@@ -1,0 +1,26 @@
+description: >
+  Reports one linter that an earlier step ran and recorded, and fails if that linter failed.
+
+  Lets one job run every linter, even after one of them fails, while each linter still gets a
+  step of its own. The earlier step writes <linter>.log and <linter>.status (the exit status)
+  into results_dir for every linter.
+
+parameters:
+  linter:
+    type: string
+  results_dir:
+    type: string
+    default: /tmp/lint
+
+steps:
+  - run:
+      name: << parameters.linter >>
+      when: always
+      command: |
+        if [ ! -e "<< parameters.results_dir >>/<< parameters.linter >>.status" ]; then
+          echo "<< parameters.linter >> did not run, because a step before the linters failed."
+          exit 1
+        fi
+
+        cat "<< parameters.results_dir >>/<< parameters.linter >>.log"
+        exit "$(cat "<< parameters.results_dir >>/<< parameters.linter >>.status")"
