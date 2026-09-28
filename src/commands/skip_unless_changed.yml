@@ -16,17 +16,20 @@ steps:
   - run:
       name: Skip unless << parameters.paths >> changed
       command: |
-        if [ "$CIRCLE_BRANCH" = "<< parameters.base_branch >>" ]; then exit 0; fi
+        paths="<< parameters.paths >>"
+        base_branch="<< parameters.base_branch >>"
 
-        if ! git fetch --quiet origin "<< parameters.base_branch >>" || ! base=$(git merge-base HEAD FETCH_HEAD); then
-          echo "Could not find where this branch left << parameters.base_branch >>, so running everything."
+        if [ "$CIRCLE_BRANCH" = "$base_branch" ]; then exit 0; fi
+
+        if ! git fetch --quiet origin "$base_branch" || ! base=$(git merge-base HEAD FETCH_HEAD); then
+          echo "Could not find where this branch left ${base_branch}, so running everything."
           exit 0
         fi
 
         # shellcheck disable=SC2086
-        if git diff --quiet "$base" HEAD -- << parameters.paths >>; then
-          echo "Nothing in << parameters.paths >> changed since ${base}, so this job has nothing to check."
+        if git diff --quiet "$base" HEAD -- $paths; then
+          echo "Nothing in ${paths} changed since ${base}, so this job has nothing to check."
           circleci-agent step halt
         else
-          echo "<< parameters.paths >> changed since ${base}, so running everything."
+          echo "${paths} changed since ${base}, so running everything."
         fi

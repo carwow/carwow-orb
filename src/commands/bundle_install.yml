@@ -20,7 +20,7 @@ steps:
         ruby -v
         bundle version
         bundle config set --local path vendor/bundle
-        bundle config set --local frozen <<# parameters.frozen >>true<</ parameters.frozen >><<^ parameters.frozen >>false<</ parameters.frozen >>
+        bundle config set --local frozen "<< parameters.frozen >>"
         bundle check || bundle install --jobs=4 --retry=3
         bundle clean --force
         rm -rf vendor/bundle/ruby/*/cache
