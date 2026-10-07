@@ -9,7 +9,9 @@ parameters:
     description: Heroku's application name
     type: string
 
-executor: ruby
+executor:
+  name: ruby
+  tag: deploy
 resource_class: small
 
 steps:
